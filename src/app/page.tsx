@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -16,12 +17,26 @@ export default function Home() {
             Tu sistema de gestión universitario profesional
           </p>
           <div className="flex gap-4 justify-center">
-            <Button size="lg">
-              Comenzar Ahora
-            </Button>
-            <Button variant="outline" size="lg">
-              Ver Demo
-            </Button>
+            <Link href="/login">
+              <Button size="lg">
+                Comenzar Ahora
+              </Button>
+            </Link>
+            <Link href="/login">
+              <Button variant="outline" size="lg">
+                Ver Demo
+              </Button>
+            </Link>
+          </div>
+          
+          {/* Demo credentials reminder */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800 font-medium mb-1">
+              Credenciales de prueba:
+            </p>
+            <p className="text-xs text-blue-700">
+              Email: demo@studyflow.com | Contraseña: demo123
+            </p>
           </div>
         </Card>
       </div>
