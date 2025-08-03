@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link';
-import { BookOpen, Calendar, FileText, User, LogOut } from 'lucide-react';
+import { BookOpen, Calendar, FileText, User, LogOut, CheckSquare } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Button from '@/components/ui/Button';
 
 export default function Navbar() {
-  const { user, logout } = useAuth(); // <-- ESTO ES CRÍTICO
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -31,6 +31,10 @@ export default function Navbar() {
             <Link href="/subjects" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
               <BookOpen className="h-4 w-4" />
               <span>Materias</span>
+            </Link>
+            <Link href="/tasks" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
+              <CheckSquare className="h-4 w-4" />
+              <span>Tareas</span>
             </Link>
             <Link href="/notes" className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
               <FileText className="h-4 w-4" />

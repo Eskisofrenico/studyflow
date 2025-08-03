@@ -1,6 +1,7 @@
 'use client'
 import { useEffect } from 'react';
-import { BookOpen, CheckCircle, FileText, Clock } from 'lucide-react';
+import { BookOpen, CheckCircle, FileText, Clock, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Card from '@/components/ui/Card';
 import { useAuth } from '@/hooks/useAuth';
@@ -37,7 +38,7 @@ export default function DashboardPage() {
   const handleQuickAddSubject = () => {
     const subjectNames = [
       'Análisis Matemático',
-      'Física General',
+      'Física General', 
       'Química Orgánica',
       'Historia del Arte',
       'Inglés Técnico',
@@ -106,34 +107,46 @@ export default function DashboardPage() {
         
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatsCard
-            title="Materias Activas"
-            value={stats.materias}
-            icon={<BookOpen className="w-6 h-6" />}
-            color="blue"
-            change="+2 este mes"
-          />
-          <StatsCard
-            title="Tareas Pendientes"
-            value={stats.tareasPendientes}
-            icon={<Clock className="w-6 h-6" />}
-            color="yellow"
-            change="5 próximas"
-          />
-          <StatsCard
-            title="Notas Guardadas"
-            value={stats.notasGuardadas}
-            icon={<FileText className="w-6 h-6" />}
-            color="green"
-            change="+12 esta semana"
-          />
-          <StatsCard
-            title="Completadas"
-            value={stats.tareasCompletadas}
-            icon={<CheckCircle className="w-6 h-6" />}
-            color="purple"
-            change="80% completadas"
-          />
+          <Link href="/subjects">
+            <StatsCard
+              title="Materias Activas"
+              value={stats.materias}
+              icon={<BookOpen className="w-6 h-6" />}
+              color="blue"
+              change="+2 este mes"
+              clickable
+            />
+          </Link>
+          <Link href="/tasks">
+            <StatsCard
+              title="Tareas Pendientes"
+              value={stats.tareasPendientes}
+              icon={<Clock className="w-6 h-6" />}
+              color="yellow"
+              change="5 próximas"
+              clickable
+            />
+          </Link>
+          <Link href="/notes">
+            <StatsCard
+              title="Notas Guardadas"
+              value={stats.notasGuardadas}
+              icon={<FileText className="w-6 h-6" />}
+              color="green"
+              change="+12 esta semana"
+              clickable
+            />
+          </Link>
+          <Link href="/tasks">
+            <StatsCard
+              title="Completadas"
+              value={stats.tareasCompletadas}
+              icon={<CheckCircle className="w-6 h-6" />}
+              color="purple"
+              change="80% completadas"
+              clickable
+            />
+          </Link>
         </div>
 
         {/* Quick Actions - AHORA FUNCIONALES */}
@@ -165,6 +178,47 @@ export default function DashboardPage() {
             </button>
           </div>
         </Card>
+
+        {/* Quick Navigation */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Próximas Tareas</h3>
+              <Link href="/tasks" className="text-blue-600 hover:text-blue-800 flex items-center text-sm">
+                Ver todas <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+            </div>
+            {tasks.filter(t => !t.completed).slice(0, 3).map(task => (
+              <div key={task.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                <span className="text-sm text-gray-700 truncate">{task.title}</span>
+                <span className="text-xs text-gray-500">
+                  {new Date(task.dueDate).toLocaleDateString()}
+                </span>
+              </div>
+            ))}
+            {tasks.filter(t => !t.completed).length === 0 && (
+              <p className="text-gray-500 text-sm">No hay tareas pendientes</p>
+            )}
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Mis Materias</h3>
+              <Link href="/subjects" className="text-blue-600 hover:text-blue-800 flex items-center text-sm">
+                Ver todas <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+            </div>
+            {subjects.slice(0, 3).map(subject => (
+              <div key={subject.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                <span className="text-sm text-gray-700">{subject.name}</span>
+                <span className="text-xs text-gray-500">{subject.code}</span>
+              </div>
+            ))}
+            {subjects.length === 0 && (
+              <p className="text-gray-500 text-sm">No hay materias registradas</p>
+            )}
+          </Card>
+        </div>
       </div>
     </div>
   );
@@ -176,9 +230,10 @@ interface StatsCardProps {
   icon: React.ReactNode;
   color: 'blue' | 'yellow' | 'green' | 'purple';
   change: string;
+  clickable?: boolean;
 }
 
-function StatsCard({ title, value, icon, color, change }: StatsCardProps) {
+function StatsCard({ title, value, icon, color, change, clickable = false }: StatsCardProps) {
   const colorStyles = {
     blue: 'bg-blue-50 border-blue-200 text-blue-600',
     yellow: 'bg-yellow-50 border-yellow-200 text-yellow-600',
@@ -187,7 +242,7 @@ function StatsCard({ title, value, icon, color, change }: StatsCardProps) {
   };
 
   return (
-    <Card hover className={`${colorStyles[color]} border`}>
+    <Card hover className={`${colorStyles[color]} border ${clickable ? 'cursor-pointer transform hover:scale-105 transition-transform' : ''}`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>

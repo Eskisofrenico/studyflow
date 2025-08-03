@@ -41,7 +41,7 @@ export default function SubjectsPage() {
     const code = 'ING-' + Math.floor(Math.random() * 900 + 100);
     
     quickAddSubject(randomName, code);
-    alert(`✅ Materia "${randomName}" agregada exitosamente!`);
+    alert(` Materia "${randomName}" agregada exitosamente!`);
   };
 
   return (
@@ -127,7 +127,7 @@ function SubjectCard({ subject }: SubjectCardProps) {
 
   const handleViewDetails = () => {
     const subjectTasks = tasks.filter(task => task.subjectId === subject.id);
-    alert(`📋 Detalles de ${subject.name}:\n\n` +
+    alert(`Detalles de ${subject.name}:\n\n` +
           `Código: ${subject.code}\n` +
           `Créditos: ${subject.credits}\n` +
           `Profesor: ${subject.professor || 'No asignado'}\n` +
@@ -147,13 +147,13 @@ function SubjectCard({ subject }: SubjectCardProps) {
     const randomTask = taskNames[Math.floor(Math.random() * taskNames.length)];
     
     quickAddTask(randomTask, subject.id);
-    alert(`✅ Tarea "${randomTask}" agregada a ${subject.name}!`);
+    alert(` Tarea "${randomTask}" agregada a ${subject.name}!`);
   };
 
   const handleDelete = () => {
     if (confirm(`¿Eliminar la materia "${subject.name}"? Esto también eliminará todas sus tareas y notas.`)) {
       deleteSubject(subject.id);
-      alert(`🗑️ Materia "${subject.name}" eliminada`);
+      alert(`Materia "${subject.name}" eliminada`);
     }
   };
 
@@ -166,7 +166,6 @@ function SubjectCard({ subject }: SubjectCardProps) {
         </div>
         <div className="flex items-center space-x-1">
           <span className="text-xs bg-gray-100 px-2 py-1 rounded-full">
-            {subject.credits} créditos
           </span>
           <button 
             onClick={handleDelete}
